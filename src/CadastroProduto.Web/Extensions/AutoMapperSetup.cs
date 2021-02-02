@@ -1,6 +1,7 @@
-using System.Reflection;
+using AutoMapper;
 using CadastroProduto.Application.AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace CadastroProduto.Web.Extensions
 {

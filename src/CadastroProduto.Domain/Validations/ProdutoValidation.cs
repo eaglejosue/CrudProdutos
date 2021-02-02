@@ -15,7 +15,7 @@ namespace CadastroProduto.Domain.Validations
         {
             RuleFor(p => p.Nome)
                 .NotEmpty().WithMessage("O Nome não pode ser vazio.")
-                .MaximumLength(150).WithMessage("O Nome deve possui no máximo 100 caracteres.");
+                .MaximumLength(100).WithMessage("O Nome deve possui no máximo 100 caracteres.");
         }
         
         public void ValidarValor()

@@ -14,6 +14,15 @@ namespace CadastroProduto.Domain.Entities
             DataCriacao = dataCriacao ?? DateTime.Now;
         }
 
+        public Produto(int id, string nome, decimal valor, byte[] imagem = null, DateTime? dataCriacao = null)
+        {
+            Id = id;
+            Nome = nome;
+            Valor = valor;
+            Imagem = imagem;
+            DataCriacao = dataCriacao ?? DateTime.Now;
+        }
+
         public int Id { get; set; }
         public string Nome { get; set; }
         public decimal Valor { get; set; }

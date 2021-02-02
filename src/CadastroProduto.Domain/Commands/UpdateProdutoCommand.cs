@@ -1,4 +1,5 @@
 using CadastroProduto.Domain.Entities;
+using CadastroProduto.Domain.Validations;
 
 namespace CadastroProduto.Domain.Commands
 {
@@ -6,7 +7,7 @@ namespace CadastroProduto.Domain.Commands
     {
         public UpdateProdutoCommand() { }
 
-        public UpdateProdutoCommand(int id, string nome, decimal valor, byte[] imagem)
+        public UpdateProdutoCommand(int id, string nome, decimal valor, byte[] imagem = null)
         {
             Id = id;
             Nome = nome;
@@ -20,6 +21,17 @@ namespace CadastroProduto.Domain.Commands
             Nome = produto.Nome;
             Valor = produto.Valor;
             Imagem = produto.Imagem;
+        }
+
+        public override bool IsValid()
+        {
+            var validation = new ProdutoValidation();
+            validation.ValidarId();
+            validation.ValidarNome();
+            validation.ValidarValor();
+
+            ValidationResult = validation.Validate(this);
+            return ValidationResult.IsValid;
         }
     }
 }
