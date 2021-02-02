@@ -1,5 +1,3 @@
-using System;
-
 namespace CadastroProduto.Web.Models
 {
     public class ErrorViewModel

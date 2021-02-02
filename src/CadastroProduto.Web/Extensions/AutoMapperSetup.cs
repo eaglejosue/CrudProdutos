@@ -1,6 +1,5 @@
 using System.Reflection;
 using CadastroProduto.Application.AutoMapper;
-using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CadastroProduto.Web.Extensions

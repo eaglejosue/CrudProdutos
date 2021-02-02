@@ -101,7 +101,6 @@ namespace CadastroProduto.Web.Controllers
                     return Result(result);
                 }
 
-                //var command = new CreateProdutoCommand(produto);
                 var command = _mapper.Map<CreateProdutoCommand>(produto);
                 result = await _mediator.Send(command);
 
@@ -141,7 +140,6 @@ namespace CadastroProduto.Web.Controllers
                 var produtoBd = await _produtoRepository.GetById(produto.Id);
                 if (produtoBd == null) return NotFound();
 
-                //var command = new UpdateProdutoCommand(produto);
                 var command = _mapper.Map<UpdateProdutoCommand>(produto);
                 result = await _mediator.Send(command);
 
