@@ -13,10 +13,10 @@ namespace CadastroProduto.Tests
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
-            var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
+            var moqProdutoRepository = new ProdutoRepositoryFake();
 
             //Act
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository);
             var command = new CreateProdutoCommand(new Produto("Produto A", 10m));
             var result = await handler.Handle(command);
 
@@ -30,10 +30,10 @@ namespace CadastroProduto.Tests
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
-            var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
+            var moqProdutoRepository = new ProdutoRepositoryFake();
 
             //Act
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository);
             var command = new CreateProdutoCommand(new Produto("", 1m));
             var result = await handler.Handle(command);
 
@@ -47,10 +47,10 @@ namespace CadastroProduto.Tests
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
-            var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
+            var moqProdutoRepository = new ProdutoRepositoryFake();
 
             //Act
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository);
             var command = new CreateProdutoCommand(new Produto("Produto B", 0m));
             var result = await handler.Handle(command);
 
@@ -64,10 +64,10 @@ namespace CadastroProduto.Tests
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
-            var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
+            var moqProdutoRepository = new ProdutoRepositoryFake();
 
             //Act
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository);
             var command = new UpdateProdutoCommand(new Produto(3, "Produto C", 1.5m));
             var result = await handler.Handle(command);
 
@@ -81,10 +81,10 @@ namespace CadastroProduto.Tests
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
-            var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
+            var moqProdutoRepository = new ProdutoRepositoryFake();
 
             //Act
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository);
             var command = new UpdateProdutoCommand(new Produto(1, "", 150m));
             var result = await handler.Handle(command);
 
@@ -98,10 +98,10 @@ namespace CadastroProduto.Tests
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
-            var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
+            var moqProdutoRepository = new ProdutoRepositoryFake();
 
             //Act
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository);
             var command = new UpdateProdutoCommand(new Produto(2, "Produto B", 0m));
             var result = await handler.Handle(command);
 
@@ -115,10 +115,10 @@ namespace CadastroProduto.Tests
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
-            var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
+            var moqProdutoRepository = new ProdutoRepositoryFake();
 
             //Act
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository);
             var command = new DeleteProdutoCommand(1);
             var result = await handler.Handle(command);
 
@@ -132,10 +132,10 @@ namespace CadastroProduto.Tests
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
-            var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
+            var moqProdutoRepository = new ProdutoRepositoryFake();
 
             //Act
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository);
             var command = new DeleteProdutoCommand(0);
             var result = await handler.Handle(command);
 
