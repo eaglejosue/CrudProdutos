@@ -25,7 +25,7 @@ namespace CadastroProduto.Domain.Commands
         private IEnumerable<string> GetErrors(ProdutoCommand request) =>
             request.ValidationResult.Errors.Select(err => err.ErrorMessage);
 
-        public async Task<Result> Handle(CreateProdutoCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(CreateProdutoCommand request, CancellationToken cancellationToken = default)
         {
             var result = new Result();
 
@@ -43,7 +43,7 @@ namespace CadastroProduto.Domain.Commands
             return result;
         }
 
-        public async Task<Result> Handle(UpdateProdutoCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdateProdutoCommand request, CancellationToken cancellationToken = default)
         {
             var result = new Result();
 
@@ -74,7 +74,7 @@ namespace CadastroProduto.Domain.Commands
             return result;
         }
 
-        public async Task<Result> Handle(DeleteProdutoCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(DeleteProdutoCommand request, CancellationToken cancellationToken = default)
         {
             var result = new Result();
 
