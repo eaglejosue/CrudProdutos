@@ -1,6 +1,7 @@
 using CadastroProduto.Domain.Commands;
 using CadastroProduto.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
 
 namespace CadastroProduto.Tests
 {
@@ -8,146 +9,138 @@ namespace CadastroProduto.Tests
     public class ProdutoTests
     {
         [TestMethod]
-        public async void CreateProdutoCommandValido()
+        public async Task CreateProdutoCommandValido()
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
             var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
 
             //Act
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var command = new CreateProdutoCommand(new Produto("Produto A", 10m));
-            var commandValid = command.IsValid();
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var result = await handler.Handle(command);
 
             //Assert
-            Assert.IsTrue(commandValid);
+            Assert.IsTrue(command.IsValid());
             Assert.IsFalse(result.HasErrors);
         }
 
         [TestMethod]
-        public async void CreateProdutoCommandNomeInvalido()
+        public async Task CreateProdutoCommandNomeInvalido()
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
             var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
 
             //Act
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var command = new CreateProdutoCommand(new Produto("", 1m));
-            var commandValid = command.IsValid();
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var result = await handler.Handle(command);
 
             //Assert
-            Assert.IsFalse(commandValid);
+            Assert.IsFalse(command.IsValid());
             Assert.IsTrue(result.HasErrors);
         }
 
         [TestMethod]
-        public async void CreateProdutoCommandValorInvalido()
+        public async Task CreateProdutoCommandValorInvalido()
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
             var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
 
             //Act
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var command = new CreateProdutoCommand(new Produto("Produto B", 0m));
-            var commandValid = command.IsValid();
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var result = await handler.Handle(command);
 
             //Assert
-            Assert.IsFalse(commandValid);
+            Assert.IsFalse(command.IsValid());
             Assert.IsTrue(result.HasErrors);
         }
 
         [TestMethod]
-        public async void UpdateProdutoCommandValido()
+        public async Task UpdateProdutoCommandValido()
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
             var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
 
             //Act
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var command = new UpdateProdutoCommand(new Produto(3, "Produto C", 1.5m));
-            var commandValid = command.IsValid();
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var result = await handler.Handle(command);
 
             //Assert
-            Assert.IsTrue(commandValid);
+            Assert.IsTrue(command.IsValid());
             Assert.IsFalse(result.HasErrors);
         }
 
         [TestMethod]
-        public async void UpdateProdutoCommandNomeInvalido()
+        public async Task UpdateProdutoCommandNomeInvalido()
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
             var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
 
             //Act
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var command = new UpdateProdutoCommand(new Produto(1, "", 150m));
-            var commandValid = command.IsValid();
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var result = await handler.Handle(command);
 
             //Assert
-            Assert.IsFalse(commandValid);
+            Assert.IsFalse(command.IsValid());
             Assert.IsTrue(result.HasErrors);
         }
 
         [TestMethod]
-        public async void UpdateProdutoCommandValorInvalido()
+        public async Task UpdateProdutoCommandValorInvalido()
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
             var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
 
             //Act
+            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var command = new UpdateProdutoCommand(new Produto(2, "Produto B", 0m));
-            var commandValid = command.IsValid();
-            var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
             var result = await handler.Handle(command);
 
             //Assert
-            Assert.IsFalse(commandValid);
+            Assert.IsFalse(command.IsValid());
             Assert.IsTrue(result.HasErrors);
         }
 
         [TestMethod]
-        public async void DeleteProdutoCommandValido()
+        public async Task DeleteProdutoCommandValido()
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
             var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
 
             //Act
-            var command = new DeleteProdutoCommand(1);
-            var commandValid = command.IsValid();
             var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var command = new DeleteProdutoCommand(1);
             var result = await handler.Handle(command);
 
             //Assert
-            Assert.IsTrue(commandValid);
+            Assert.IsTrue(command.IsValid());
             Assert.IsFalse(result.HasErrors);
         }
 
         [TestMethod]
-        public async void DeleteProdutoCommandInvalido()
+        public async Task DeleteProdutoCommandInvalido()
         {
             //Arrange
             var moqMediator = MoqValidationTests.NewMediator();
             var moqProdutoRepository = MoqValidationTests.NewProdutoRepository();
 
             //Act
-            var command = new DeleteProdutoCommand(0);
-            var commandValid = command.IsValid();
             var handler = new Handler(moqMediator.Object, moqProdutoRepository.Object);
+            var command = new DeleteProdutoCommand(0);
             var result = await handler.Handle(command);
 
             //Assert
-            Assert.IsFalse(commandValid);
+            Assert.IsFalse(command.IsValid());
             Assert.IsTrue(result.HasErrors);
         }
     }
