@@ -98,7 +98,6 @@
             <div class="form-group col-md-8">
               <label>Valor</label>
               <input type="text" currencyMask class="form-control"
-                [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align: 'left' }"
                 [ngClass]="{'is-invalid': registerForm.get('valor').errors && registerForm.get('valor').touched}" formControlName="valor" placeholder="R$ 0,00">
               <div *ngIf="registerForm.get('valor').hasError('required') && registerForm.get('valor').touched" class="invalid-feedback">
                 Valor é obrigatório.

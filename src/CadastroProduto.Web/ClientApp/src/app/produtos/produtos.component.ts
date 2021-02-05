@@ -13,7 +13,7 @@ import { ApiResponse } from '../_models/ApiResponse';
 export class ProdutosComponent implements OnInit {
 
   titulo = 'Produtos';
-  dataProduto: string;
+  dataCriacao: string;
   produtosFiltrados: Produto[];
   produtos: Produto[];
   produto: Produto;
