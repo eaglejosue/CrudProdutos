@@ -26,6 +26,7 @@
     "@angular/router": "^7.2.16",
     "@auth0/angular-jwt": "^2.1.2",
     "@fortawesome/fontawesome-free": "^5.15.1",
+    "@nguniversal/module-map-ngfactory-loader": "^8.2.6",
     "angular-moment-timezone": "^1.7.1",
     "bootstrap": "^4.5.3",
     "core-js": "^2.6.11",
@@ -35,6 +36,7 @@
     "ngx-mask": "^7.9.10",
     "ngx-toastr": "^10.2.0",
     "rxjs": "~6.4.0",
+    "save": "^2.4.0",
     "tslib": "^1.14.1",
     "zone.js": "^0.8.29"
   },
