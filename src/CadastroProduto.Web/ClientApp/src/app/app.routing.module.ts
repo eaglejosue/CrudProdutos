@@ -4,8 +4,10 @@ import { ProdutosComponent } from './produtos/produtos.component';
 import { ProdutoEditComponent } from './produtos/produtoEdit/produtoEdit.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth/auth.guard';
+//import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
+  // { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'produtos', component: ProdutosComponent, canActivate: [AuthGuard] },
   { path: 'produto/:id/edit', component: ProdutoEditComponent, canActivate: [AuthGuard] },
