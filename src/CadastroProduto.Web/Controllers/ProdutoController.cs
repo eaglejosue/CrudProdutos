@@ -189,7 +189,7 @@ namespace CadastroProduto.Web.Controllers
         /// <returns>IActionResult</returns>
         /// <example>POST: api/Produto/upload</example>
         [HttpPost("upload")]
-        public async Task<IActionResult> Upload()
+        public IActionResult Upload()
         {
             try
             {
@@ -198,7 +198,7 @@ namespace CadastroProduto.Web.Controllers
                 var file = Request.Form.Files[0];
                 var folderName = Path.Combine("Resources", "Images");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                
+
                 if (!Directory.Exists(pathToSave)) Directory.CreateDirectory(pathToSave);
 
                 if (file.Length > 0)
