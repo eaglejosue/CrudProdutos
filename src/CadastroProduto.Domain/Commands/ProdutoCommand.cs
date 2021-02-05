@@ -11,7 +11,7 @@ namespace CadastroProduto.Domain.Commands
         public int Id { get; set; }
         public string Nome { get; set; }
         public decimal Valor { get; set; }
-        public byte[] Imagem { get; set; }
+        public string ImagemURL { get; set; }
         public DateTime DataCriacao { get; set; }
 
         public ValidationResult ValidationResult { get; set; }

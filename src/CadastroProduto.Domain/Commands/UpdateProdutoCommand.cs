@@ -7,7 +7,7 @@ namespace CadastroProduto.Domain.Commands
     {
         public UpdateProdutoCommand() { }
 
-        public UpdateProdutoCommand(int id, string nome, decimal valor, byte[] imagem = null)
+        public UpdateProdutoCommand(int id, string nome, decimal valor, string imagemURL = null)
         {
             Id = id;
             Nome = nome;

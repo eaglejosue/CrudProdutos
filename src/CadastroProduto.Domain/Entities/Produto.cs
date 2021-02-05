@@ -6,27 +6,27 @@ namespace CadastroProduto.Domain.Entities
     {
         public Produto() { }
 
-        public Produto(string nome, decimal valor, byte[] imagem = null, DateTime? dataCriacao = null)
+        public Produto(string nome, decimal valor, string imagemURL = null, DateTime? dataCriacao = null)
         {
             Nome = nome;
             Valor = valor;
-            Imagem = imagem;
+            ImagemURL = imagemURL;
             DataCriacao = dataCriacao ?? DateTime.Now;
         }
 
-        public Produto(int id, string nome, decimal valor, byte[] imagem = null, DateTime? dataCriacao = null)
+        public Produto(int id, string nome, decimal valor, string imagemURL = null, DateTime? dataCriacao = null)
         {
             Id = id;
             Nome = nome;
             Valor = valor;
-            Imagem = imagem;
+            ImagemURL = imagemURL;
             DataCriacao = dataCriacao ?? DateTime.Now;
         }
 
         public int Id { get; set; }
         public string Nome { get; set; }
         public decimal Valor { get; set; }
-        public byte[] Imagem { get; set; }
+        public string ImagemURL { get; set; }
         public DateTime DataCriacao { get; set; }
     }
 }

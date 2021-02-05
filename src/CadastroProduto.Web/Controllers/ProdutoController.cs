@@ -1,13 +1,16 @@
-﻿using CadastroProduto.Domain.Commands;
+﻿using AutoMapper;
+using CadastroProduto.Domain;
+using CadastroProduto.Domain.Commands;
 using CadastroProduto.Domain.Entities;
 using CadastroProduto.Domain.Interfaces.Repositories;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using CadastroProduto.Domain;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace CadastroProduto.Web.Controllers
 {
@@ -173,6 +176,45 @@ namespace CadastroProduto.Web.Controllers
             catch (Exception ex)
             {
                 return Result(new Result(ex.Message));
+            }
+        }
+
+        /// <summary>
+        /// Método assíncrono responsável por realizar upload de imagem do Produto
+        /// </summary>
+        /// <response code="200">Ok</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
+        /// <returns>IActionResult</returns>
+        /// <example>POST: api/Produto/upload</example>
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload()
+        {
+            try
+            {
+                //Alterar para salvar imagens em storage, s3 ou outro recurso
+
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                
+                if (!Directory.Exists(pathToSave)) Directory.CreateDirectory(pathToSave);
+
+                if (file.Length > 0)
+                {
+                    var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
+                    var fullPath = Path.Combine(pathToSave, filename.Replace("\"", " ").Trim());
+
+                    using var stream = new FileStream(fullPath, FileMode.Create);
+                    file.CopyTo(stream);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Result(new Result($"Erro ao tentar realizar upload: {ex.Message}"));
             }
         }
     }

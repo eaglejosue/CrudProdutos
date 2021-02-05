@@ -19,13 +19,9 @@ namespace CadastroProduto.Web.Controllers
 
         protected IActionResult Result(Result result = null)
         {
-            if (result == null)
-                return UnprocessableEntity(new { sucess = false });
-
-            if (result.HasErrors)
-                return BadRequest(new { sucess = false, errors = result.Errors });
-
-            return Ok(new { sucess = true, obj = result.ObjetoRetorno });
+            if (result == null) return UnprocessableEntity(new { success = false });
+            if (result.HasErrors) return BadRequest(new { success = false, errors = result.Errors });
+            return Ok(new { success = true, obj = result.ObjetoRetorno });
         }
     }
 }

@@ -12,7 +12,7 @@ namespace CadastroProduto.Data.Mappings
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
             builder.Property(p => p.Nome).IsRequired().HasColumnType("varchar(150)");
-            builder.Property(p => p.Imagem).HasColumnType("varbinary(max)");
+            builder.Property(p => p.ImagemURL).HasColumnType("varchar(250)");
             builder.Property(p => p.Valor).IsRequired().HasColumnType("numeric(38,2)");
             builder.Property(p => p.DataCriacao).IsRequired().HasColumnType("datetime");
 

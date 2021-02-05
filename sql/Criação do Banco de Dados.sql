@@ -8,7 +8,7 @@ CREATE TABLE dbo.Produto (
 	Id int IDENTITY(1,1) NOT NULL,
 	Nome varchar(100) NOT NULL,
 	Valor decimal(18, 5) NOT NULL,
-	Imagem varbinary(max) NULL,
+	ImagemURL varchar(250) NULL,
 	DataCriacao datetime NOT NULL,
 
 	CONSTRAINT PK_Produto PRIMARY KEY CLUSTERED 
@@ -16,5 +16,4 @@ CREATE TABLE dbo.Produto (
 		Id ASC
 	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO

@@ -8,11 +8,11 @@ namespace CadastroProduto.Domain.Commands
     {
         public CreateProdutoCommand() { }
 
-        public CreateProdutoCommand(string nome, decimal valor, byte[] imagem = null, DateTime? dataCriacao = null)
+        public CreateProdutoCommand(string nome, decimal valor, string imagemURL = null, DateTime? dataCriacao = null)
         {
             Nome = nome;
             Valor = valor;
-            Imagem = imagem;
+            ImagemURL = imagemURL;
             DataCriacao = dataCriacao ?? DateTime.Now;
         }
 
@@ -20,7 +20,7 @@ namespace CadastroProduto.Domain.Commands
         {
             Nome = produto.Nome;
             Valor = produto.Valor;
-            Imagem = produto.Imagem;
+            ImagemURL = produto.ImagemURL;
             DataCriacao = DateTime.Now;
         }
 
