@@ -1,4 +1,4 @@
-# CadastroProduto
+# Cadastro Produto
 Aplicação ASP.NET Core+ Angular utilizando Command Pattern e Repository Pattern.
 
 O projeto consiste na criação de um website composto por uma tela de login (autenticando via api) e um CRUD de produtos.
