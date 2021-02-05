@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/auth.service';
-import { BootstrapAlertService, BootstrapAlert } from 'ngx-bootstrap-alert';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService
     , public router: Router
-    , public alertService: BootstrapAlertService) { }
+    , private toastrService: ToastrService) { }
 
   ngOnInit() {
     if (localStorage.getItem('token') != null) {
@@ -28,10 +28,10 @@ export class LoginComponent implements OnInit {
       .subscribe(
         () => {
           this.router.navigate(['/home']);
-          this.alertService.alert(new BootstrapAlert("Logado com Sucesso!", "alert-success"));
+          this.toastrService.success("Logado com Sucesso!");
         },
         error => {
-          this.alertService.alert(new BootstrapAlert("Falha ao tentar Logar", "alert-warning"));
+          this.toastrService.warning("Falha ao tentar Logar");
         }
       );
   }

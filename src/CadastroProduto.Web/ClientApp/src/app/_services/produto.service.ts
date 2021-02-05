@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Produto } from '../_models/Produto';
+import { ApiResponse } from '../_models/ApiResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +12,12 @@ export class ProdutoService {
 
   constructor(private http: HttpClient) { }
 
-  getAllProduto(): Observable<Produto[]> {
-    return this.http.get<Produto[]>(this.baseURL);
+  getAllProduto(): Observable<ApiResponse<Produto[]>> {
+    return this.http.get<ApiResponse<Produto[]>>(this.baseURL);
   }
 
-  getProdutoById(id: number): Observable<Produto> {
-    return this.http.get<Produto>(`${this.baseURL}/${id}`);
+  getProdutoById(id: number): Observable<ApiResponse<Produto>> {
+    return this.http.get<ApiResponse<Produto>>(`${this.baseURL}/${id}`);
   }
 
   postUpload(file: File, name: string) {
@@ -28,15 +29,15 @@ export class ProdutoService {
   }
 
   postProduto(produto: Produto) {
-    return this.http.post(this.baseURL, produto);
+    return this.http.post<ApiResponse<Produto>>(this.baseURL, produto);
   }
 
   putProduto(produto: Produto) {
-    return this.http.put(`${this.baseURL}/${produto.id}`, produto);
+    return this.http.put<ApiResponse<Produto>>(`${this.baseURL}/${produto.id}`, produto);
   }
 
   deleteProduto(id: number) {
-    return this.http.delete(`${this.baseURL}/${id}`);
+    return this.http.delete<ApiResponse>(`${this.baseURL}/${id}`);
   }
 
 }

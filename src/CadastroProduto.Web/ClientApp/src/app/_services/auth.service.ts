@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ export class AuthService {
 
   baseURL = 'https://dev.sitemercado.com.br/api/login';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient
+    , private toastrService: ToastrService) { }
 
   login(model: any) {
 
@@ -27,7 +29,7 @@ export class AuthService {
             localStorage.setItem('token', 'token ficticio');
             sessionStorage.setItem('username', 'Josué Monteiro');
           }
-          else $.notify({ message: 'Usuário ou Senha incorretos' },{ type: 'danger' });
+          else this.toastrService.error('Usuário ou Senha incorretos');
         })
       );
   }

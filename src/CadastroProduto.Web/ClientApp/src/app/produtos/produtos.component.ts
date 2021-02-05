@@ -1,8 +1,9 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProdutoService } from '../_services/produto.service';
 import { Produto } from '../_models/Produto';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { BootstrapAlertService, BootstrapAlert } from 'ngx-bootstrap-alert';
+import { ToastrService } from 'ngx-toastr';
+import { ApiResponse } from '../_models/ApiResponse';
 
 @Component({
   selector: 'app-produtos',
@@ -34,7 +35,7 @@ export class ProdutosComponent implements OnInit {
   constructor(
     private produtoService: ProdutoService
     , private fb: FormBuilder
-    , public alertService: BootstrapAlertService
+    , private toastrService: ToastrService
   ) {
   }
 
@@ -66,14 +67,33 @@ export class ProdutosComponent implements OnInit {
     this.bodyDeletarProduto = `Tem certeza que deseja excluir o Produto: ${produto.nome}, Código: ${produto.id}`;
   }
 
+  getProdutos() {
+    this.dataAtual = new Date().getMilliseconds().toString();
+
+    this.produtoService.getAllProduto().subscribe(
+      (apiResponse: ApiResponse<Produto[]>) => {
+        if (apiResponse && apiResponse.success){
+          this.produtos = apiResponse.data;
+          this.produtosFiltrados = this.produtos;
+          console.log(this.produtos);
+        }
+        else this.toastrService.error(`Erro ao carregar Produtos: ${apiResponse.errors[0]}`);
+      }, error => {
+        this.toastrService.error(`Erro ao tentar Carregar produtos: ${error}`);
+      });
+  }
+
   confirmeDelete(template: any) {
     this.produtoService.deleteProduto(this.produto.id).subscribe(
-      () => {
-        template.hide();
-        this.getProdutos();
-        this.alertService.alert(new BootstrapAlert('Deletado com Sucesso', "alert-success"));
+      (apiResponse: ApiResponse) => {
+        if (apiResponse && apiResponse.success){
+          template.hide();
+          this.getProdutos();
+          this.toastrService.error('Deletado com Sucesso');
+        }
+        else this.toastrService.error(`Erro ao Deletar: ${apiResponse.errors[0]}`);
       }, error => {
-        this.alertService.alert(new BootstrapAlert('Erro ao tentar Deletar', "alert-warning"));
+        this.toastrService.error('Erro ao tentar Deletar');
         console.log(error);
       }
     );
@@ -103,10 +123,9 @@ export class ProdutosComponent implements OnInit {
   validation() {
     this.registerForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      dataProduto: ['', Validators.required],
+      valor: ['', Validators.required, Validators.min(0.01)],
       imagemURL: ['', Validators.required],
-      telefone: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      dataCriacao: [],
     });
   }
 
@@ -151,12 +170,15 @@ export class ProdutosComponent implements OnInit {
         this.uploadImagem();
 
         this.produtoService.postProduto(this.produto).subscribe(
-          (novoProduto: Produto) => {
-            template.hide();
-            this.getProdutos();
-            this.alertService.alert(new BootstrapAlert('Inserido com Sucesso!', 'alert-warning'));
+          (apiResponse: ApiResponse<Produto>) => {
+            if (apiResponse && apiResponse.success){ 
+              template.hide();
+              this.getProdutos();
+              this.toastrService.success('Inserido com Sucesso!');
+            }
+            else this.toastrService.error(`Erro ao Inserir: ${apiResponse.errors[0]}`);
           }, error => {
-            this.alertService.alert(new BootstrapAlert(`Erro ao Inserir: ${error}`, 'alert-warning'));
+            this.toastrService.error(`Erro ao Inserir: ${error}`);
           }
         );
       } else {
@@ -165,29 +187,19 @@ export class ProdutosComponent implements OnInit {
         this.uploadImagem();
 
         this.produtoService.putProduto(this.produto).subscribe(
-          () => {
-            template.hide();
-            this.getProdutos();
-            this.alertService.alert(new BootstrapAlert('Editado com Sucesso!', 'alert-success'));
+          (apiResponse: ApiResponse<Produto>) => {
+            if (apiResponse && apiResponse.success) {
+              template.hide();
+              this.getProdutos();
+              this.toastrService.success('Editado com Sucesso!');
+            }
+            else this.toastrService.error(`Erro ao Editar: ${apiResponse.errors[0]}`);
           }, error => {
-            this.alertService.alert(new BootstrapAlert(`Erro ao Editar: ${error}`, 'alert-warning'));
+            this.toastrService.error(`Erro ao Editar: ${error}`);
           }
         );
       }
     }
-  }
-
-  getProdutos() {
-    this.dataAtual = new Date().getMilliseconds().toString();
-
-    this.produtoService.getAllProduto().subscribe(
-      (obj: Produto[]) => {
-        this.produtos = obj;
-        this.produtosFiltrados = this.produtos;
-        console.log(this.produtos);
-      }, error => {
-        this.alertService.alert(new BootstrapAlert(`Erro ao tentar Carregar produtos: ${error}`, 'alert-warning'));
-      });
   }
 
 }

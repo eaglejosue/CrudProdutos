@@ -3,7 +3,8 @@ import { ProdutoService } from 'src/app/_services/produto.service';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Produto } from 'src/app/_models/Produto';
 import { ActivatedRoute } from '@angular/router';
-import { BootstrapAlertService, BootstrapAlert } from 'ngx-bootstrap-alert';
+import { ToastrService } from 'ngx-toastr';
+import { ApiResponse } from 'src/app/_models/ApiResponse';
 
 @Component({
   selector: 'app-produto-edit',
@@ -25,7 +26,7 @@ export class ProdutoEditComponent implements OnInit {
     private produtoService: ProdutoService
     , private fb: FormBuilder
     , private router: ActivatedRoute
-    , public alertService: BootstrapAlertService
+    , private toastrService: ToastrService
   ) {
   }
 
@@ -36,32 +37,29 @@ export class ProdutoEditComponent implements OnInit {
 
   carregarProduto() {
     const idProduto = +this.router.snapshot.paramMap.get('id');
-    this.produtoService.getProdutoById(idProduto)
-      .subscribe(
-        (obj: Produto) => {
-          this.produto = Object.assign({}, obj);
-          this.fileNameToUpdate = obj.imagemURL.toString();
-
+    this.produtoService.getProdutoById(idProduto).subscribe(
+      (apiResponse: ApiResponse<Produto>) => {
+        if (apiResponse && apiResponse.success){
+          this.produto = apiResponse.data;
+          this.fileNameToUpdate = apiResponse.data.imagemURL.toString();
+          
           this.imagemURL = `http://localhost:5000/resources/images/${this.produto.imagemURL}?_ts=${this.dataAtual}`;
-
+          
           this.produto.imagemURL = '';
           this.registerForm.patchValue(this.produto);
         }
-      );
+        else this.toastrService.error(`Erro ao carregar Produto: ${apiResponse.errors[0]}`);
+      }
+    );
   }
 
   validation() {
     this.registerForm = this.fb.group({
       id: [],
-      tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-      local: ['', Validators.required],
-      dataProduto: ['', Validators.required],
-      imagemURL: [''],
-      qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
-      telefone: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      lotes: this.fb.array([]),
-      redesSociais: this.fb.array([])
+      nome: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      valor: ['', Validators.required],
+      imagemURL: [],
+      dataCriacao: [],
     });
   }
 
@@ -81,10 +79,13 @@ export class ProdutoEditComponent implements OnInit {
     this.uploadImagem();
 
     this.produtoService.putProduto(this.produto).subscribe(
-      () => {
-        this.alertService.alert(new BootstrapAlert("Editado com Sucesso!", "alert-success"));
+      (apiResponse: ApiResponse<Produto>) => {
+        if (apiResponse && apiResponse.success){
+          this.toastrService.success("Editado com Sucesso!");
+        }
+        else this.toastrService.error(`Erro ao Editar: ${apiResponse.errors[0]}`);
       }, error => {
-        this.alertService.alert(new BootstrapAlert(`Erro ao Editar: ${error}`, "alert-warning"));
+        this.toastrService.error(`Erro ao Editar: ${error}`);
       }
     );
   }
