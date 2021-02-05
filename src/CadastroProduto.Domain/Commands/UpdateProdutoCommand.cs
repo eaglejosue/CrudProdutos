@@ -12,7 +12,7 @@ namespace CadastroProduto.Domain.Commands
             Id = id;
             Nome = nome;
             Valor = valor;
-            Imagem = imagem;
+            ImagemURL = imagemURL;
         }
 
         public UpdateProdutoCommand(Produto produto)
@@ -20,7 +20,7 @@ namespace CadastroProduto.Domain.Commands
             Id = produto.Id;
             Nome = produto.Nome;
             Valor = produto.Valor;
-            Imagem = produto.Imagem;
+            ImagemURL = produto.ImagemURL;
         }
 
         public override bool IsValid()

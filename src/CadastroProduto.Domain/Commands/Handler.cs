@@ -31,7 +31,7 @@ namespace CadastroProduto.Domain.Commands
 
             if (request.IsValid())
             {
-                var produto = await _produtoRepository.Add(new Produto(request.Nome, request.Valor, request.Imagem));
+                var produto = await _produtoRepository.Add(new Produto(request.Nome, request.Valor, request.ImagemURL));
                 result.DefineObjetoRetorno(produto);
             }
             else
@@ -54,7 +54,7 @@ namespace CadastroProduto.Domain.Commands
                 {
                     produto.Nome = request.Nome;
                     produto.Valor = request.Valor;
-                    produto.Imagem = request.Imagem;
+                    produto.ImagemURL = request.ImagemURL;
                     produto = await _produtoRepository.Update(produto);
                     result.DefineObjetoRetorno(produto);
                 }

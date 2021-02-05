@@ -8,8 +8,7 @@ namespace CadastroProduto.Data.Context
     {
         public CadastroProdutoContext(DbContextOptions options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) =>
-            modelBuilder.ApplyConfiguration(new ProdutoMap());
+        protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.ApplyConfiguration(new ProdutoMap());
 
         public DbSet<Produto> Produtos {get; set; }
     }
