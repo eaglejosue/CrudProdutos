@@ -181,8 +181,8 @@ export class ProdutosComponent implements OnInit {
     this.dataAtual = new Date().getMilliseconds().toString();
 
     this.produtoService.getAllProduto().subscribe(
-      (_produtos: Produto[]) => {
-        this.produtos = _produtos;
+      (obj: Produto[]) => {
+        this.produtos = obj;
         this.produtosFiltrados = this.produtos;
         console.log(this.produtos);
       }, error => {

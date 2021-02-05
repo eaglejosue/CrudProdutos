@@ -38,9 +38,9 @@ export class ProdutoEditComponent implements OnInit {
     const idProduto = +this.router.snapshot.paramMap.get('id');
     this.produtoService.getProdutoById(idProduto)
       .subscribe(
-        (produto: Produto) => {
-          this.produto = Object.assign({}, produto);
-          this.fileNameToUpdate = produto.imagemURL.toString();
+        (obj: Produto) => {
+          this.produto = Object.assign({}, obj);
+          this.fileNameToUpdate = obj.imagemURL.toString();
 
           this.imagemURL = `http://localhost:5000/resources/images/${this.produto.imagemURL}?_ts=${this.dataAtual}`;
 
@@ -62,25 +62,6 @@ export class ProdutoEditComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       lotes: this.fb.array([]),
       redesSociais: this.fb.array([])
-    });
-  }
-
-  criaLote(lote: any): FormGroup {
-    return this.fb.group({
-      id: [lote.id],
-      nome: [lote.nome, Validators.required],
-      quantidade: [lote.quantidade, Validators.required],
-      preco: [lote.preco, Validators.required],
-      dataInicio: [lote.dataInicio],
-      dataFim: [lote.dataFim]
-    });
-  }
-
-  criaRedeSocial(redeSocial: any): FormGroup {
-    return this.fb.group({
-      id: [redeSocial.id],
-      nome: [redeSocial.nome, Validators.required],
-      url: [redeSocial.url, Validators.required]
     });
   }
 
