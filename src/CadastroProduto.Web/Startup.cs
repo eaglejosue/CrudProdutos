@@ -73,6 +73,7 @@ namespace CadastroProduto.Web
                 app.UseHsts();
             }
 
+            app.UseCors(c => c.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
