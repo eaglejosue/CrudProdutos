@@ -7,8 +7,8 @@ GO
 CREATE TABLE dbo.Produto (
 	Id int IDENTITY(1,1) NOT NULL,
 	Nome varchar(100) NOT NULL,
-	Valor decimal(18, 5) NOT NULL,
-	ImagemURL varchar(250) NULL,
+	Valor decimal(15,2) NOT NULL,
+	ImagemURL varchar(500) NULL,
 	DataCriacao datetime NOT NULL,
 
 	CONSTRAINT PK_Produto PRIMARY KEY CLUSTERED 
@@ -16,4 +16,13 @@ CREATE TABLE dbo.Produto (
 		Id ASC
 	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+GO
+
+CREATE LOGIN UserCrudApp WITH PASSWORD = 'CadastroProdutoApp@2021';  
+GO  
+
+CREATE USER UserCrudApp FOR LOGIN UserCrudApp;
+GO
+
+GRANT SELECT, UPDATE, INSERT, DELETE ON SCHEMA::dbo TO UserCrudApp;
 GO

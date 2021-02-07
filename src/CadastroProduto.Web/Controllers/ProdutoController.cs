@@ -45,7 +45,7 @@ namespace CadastroProduto.Web.Controllers
                 var produtos = await _produtoRepository.GetAll();
                 if (produtos.Count() == 0) return NotFound();
 
-                return Ok(produtos);
+                return Result(new Result(produtos));
             }
             catch (Exception ex)
             {
@@ -73,7 +73,7 @@ namespace CadastroProduto.Web.Controllers
                 var produto = await _produtoRepository.GetById(id);
                 if (produto == null) return NotFound();
 
-                return Ok(produto);
+                return Result(new Result(produto));
             }
             catch (Exception ex)
             {
@@ -210,7 +210,7 @@ namespace CadastroProduto.Web.Controllers
                     file.CopyTo(stream);
                 }
 
-                return Ok();
+                return Result();
             }
             catch (Exception ex)
             {

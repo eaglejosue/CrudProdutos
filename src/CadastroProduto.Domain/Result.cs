@@ -4,22 +4,31 @@ namespace CadastroProduto.Domain
 {
     public class Result
     {
-        private List<string> _errors;
+        public List<string> Errors { get; private set; }
 
         public Result()
         {
-            _errors = new List<string>();
+            Errors = new List<string>();
         }
 
-        public Result(string error = null) => AddError(!string.IsNullOrWhiteSpace(error) ? error : "Ocorreu um erro interno.");
+        public Result(string error = null)
+        {
+            Errors = new List<string>();
+            AddError(!string.IsNullOrWhiteSpace(error) ? error : "Ocorreu um erro interno.");
+        }
 
-        public List<string> Errors => _errors;
+        public Result(object obj)
+        {
+            Errors = new List<string>();
+            DefineObjetoRetorno(obj);
+        }
 
-        public bool HasErrors => _errors.Count > 0;
 
-        public void AddError(string error) => _errors.Add(!string.IsNullOrWhiteSpace(error) ? error : "Ocorreu um erro interno.");
+        public bool HasErrors => Errors.Count > 0;
 
-        public void AddErrors(IEnumerable<string> errors) => _errors.AddRange(errors);
+        public void AddError(string error) => Errors.Add(!string.IsNullOrWhiteSpace(error) ? error : "Ocorreu um erro interno.");
+
+        public void AddErrors(IEnumerable<string> errors) => Errors.AddRange(errors);
         
         public object ObjetoRetorno { get; private set; }
 
