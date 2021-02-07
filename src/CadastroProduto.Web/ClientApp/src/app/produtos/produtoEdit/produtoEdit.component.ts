@@ -77,12 +77,11 @@ export class ProdutoEditComponent implements OnInit {
     this.produto = Object.assign({ id: this.produto.id }, this.registerForm.value);
     this.produto.imagemURL = this.fileNameToUpdate;
 
-    this.uploadImagem();
-
     this.produtoService.putProduto(this.produto).subscribe(
       (apiResponse: ApiResponse<Produto>) => {
         if (apiResponse && apiResponse.success){
           this.toastrService.success("Editado com Sucesso!");
+          this.uploadImagem();
         }
         else this.toastrService.error(`Erro ao Editar: ${apiResponse.errors[0]}`);
       }, error => {
