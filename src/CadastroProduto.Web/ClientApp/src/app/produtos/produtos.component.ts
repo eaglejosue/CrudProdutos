@@ -13,7 +13,7 @@ import { ApiResponse } from '../_models/ApiResponse';
 export class ProdutosComponent implements OnInit {
 
   titulo = 'Produtos';
-  dataCriacao: string;
+  dataCriacao: Date;
   nomeTemplate: string;
   produtosFiltrados: Produto[];
   produtos: Produto[];
@@ -26,8 +26,8 @@ export class ProdutosComponent implements OnInit {
   registerForm: FormGroup;
   bodyDeletarProduto = '';
 
-  file: File;
   fileNameToUpdate: string;
+  file: File;
 
   dataAtual: string;
 
@@ -55,6 +55,7 @@ export class ProdutosComponent implements OnInit {
     this.produto = Object.assign({}, produto);
     this.fileNameToUpdate = produto.imagemURL.toString();
     this.produto.imagemURL = '';
+    this.dataCriacao = this.produto.dataCriacao;
     this.registerForm.patchValue(this.produto);
   }
 
@@ -127,9 +128,9 @@ export class ProdutosComponent implements OnInit {
   validation() {
     this.registerForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      valor: ['', Validators.required, Validators.min(0.01)],
-      imagemURL: ['', Validators.required],
-      dataCriacao: [this.dataCriacao],
+      valor: ['', [Validators.required, Validators.min(0.01)]],
+      imagemURL: [],
+      dataCriacao: [],
     });
   }
 
@@ -144,7 +145,6 @@ export class ProdutosComponent implements OnInit {
     if (this.modoSalvar === 'post') {
       const nomeArquivo = this.produto.imagemURL.split('\\', 3);
       this.produto.imagemURL = nomeArquivo[2];
-
       this.produtoService.postUpload(this.file, nomeArquivo[2])
         .subscribe(
           () => {
@@ -167,16 +167,17 @@ export class ProdutosComponent implements OnInit {
   salvarAlteracao(template: any) {
     if (this.registerForm.valid) {
       if (this.modoSalvar === 'post') {
+
         this.produto = Object.assign({}, this.registerForm.value);
-
-        this.uploadImagem();
-
+        const nomeArquivo = this.produto.imagemURL.split('\\', 3);
+        this.produto.imagemURL = nomeArquivo[2];
+        
         this.produtoService.postProduto(this.produto).subscribe(
           (apiResponse: ApiResponse<Produto>) => {
             if (apiResponse && apiResponse.success){ 
               template.hide();
-              this.getProdutos();
               this.toastrService.success('Inserido com Sucesso!');
+              this.uploadImagem();
             }
             else this.toastrService.error(`Erro ao Inserir: ${apiResponse.errors[0]}`);
           }, error => {
@@ -184,16 +185,16 @@ export class ProdutosComponent implements OnInit {
           }
         );
       } else {
-        this.produto = Object.assign({ id: this.produto.id }, this.registerForm.value);
 
-        this.uploadImagem();
+        this.produto = Object.assign({ id: this.produto.id }, this.registerForm.value);
+        this.produto.imagemURL = this.fileNameToUpdate;
 
         this.produtoService.putProduto(this.produto).subscribe(
           (apiResponse: ApiResponse<Produto>) => {
             if (apiResponse && apiResponse.success) {
               template.hide();
-              this.getProdutos();
               this.toastrService.success('Editado com Sucesso!');
+              this.uploadImagem();
             }
             else this.toastrService.error(`Erro ao Editar: ${apiResponse.errors[0]}`);
           }, error => {

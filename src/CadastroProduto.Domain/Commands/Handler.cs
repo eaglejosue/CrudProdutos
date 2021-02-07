@@ -55,6 +55,7 @@ namespace CadastroProduto.Domain.Commands
                     produto.Nome = request.Nome;
                     produto.Valor = request.Valor;
                     produto.ImagemURL = request.ImagemURL;
+                    if(!produto.DataCriacao.Equals(request.DataCriacao)) produto.DataCriacao = request.DataCriacao;
                     produto = await _produtoRepository.Update(produto);
                     result.DefineObjetoRetorno(produto);
                 }

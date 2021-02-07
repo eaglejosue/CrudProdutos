@@ -196,6 +196,7 @@ namespace CadastroProduto.Web.Controllers
             try
             {
                 //Alterar para salvar imagens em storage, s3 ou outro recurso
+                if (Request.Form.Files.Count == 0) return Result(new Result("Arquivo não selecionado."));
 
                 var file = Request.Form.Files[0];
                 var folderName = Path.Combine("Resources", "Images");
@@ -212,7 +213,7 @@ namespace CadastroProduto.Web.Controllers
                     file.CopyTo(stream);
                 }
 
-                return Result();
+                return Result(new Result(true));
             }
             catch (Exception ex)
             {

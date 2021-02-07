@@ -21,7 +21,7 @@ namespace CadastroProduto.Web.Controllers
         {
             if (result == null) return UnprocessableEntity(new { success = false });
             if (result.HasErrors) return BadRequest(new { success = false, errors = result.Errors });
-            return Ok(new { success = true, data = result?.ObjetoRetorno ?? "ok" });
+            return Ok(new { success = true, data = result?.ObjetoRetorno ?? true });
         }
     }
 }

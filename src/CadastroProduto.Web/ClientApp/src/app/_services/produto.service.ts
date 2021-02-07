@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Produto } from '../_models/Produto';
 import { ApiResponse } from '../_models/ApiResponse';
@@ -21,11 +21,16 @@ export class ProdutoService {
   }
 
   postUpload(file: File, name: string) {
-    const fileToUplaod = <File>file[0];
+    const fileToUpload = <File>file[0];
     const formData = new FormData();
-    formData.append('file', fileToUplaod, name);
+    formData.append('file', fileToUpload, name);
 
-    return this.http.post(`${this.baseURL}/upload`, formData);
+    const req = new HttpRequest('POST', `${this.baseURL}/upload`, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+
+    return this.http.request(req);
   }
 
   postProduto(produto: Produto) {
@@ -33,7 +38,7 @@ export class ProdutoService {
   }
 
   putProduto(produto: Produto) {
-    return this.http.put<ApiResponse<Produto>>(`${this.baseURL}/${produto.id}`, produto);
+    return this.http.put<ApiResponse<Produto>>(this.baseURL, produto);
   }
 
   deleteProduto(id: number) {
