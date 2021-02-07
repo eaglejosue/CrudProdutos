@@ -22,9 +22,12 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-8">
+            <div class="form-group col-md-7">
+              <label>Valor</label>
               <input type="text" currencyMask class="form-control" [(ngModel)]="produto.valor"
-                [ngClass]="{'is-invalid': registerForm.get('valor').errors && registerForm.get('valor').touched}" formControlName="valor" placeholder="R$ 0,00">
+                [options]='{ prefix: "R$ ", thousands: ".", decimal: "," }'
+                [ngClass]="{'is-invalid': registerForm.get('valor').errors && registerForm.get('valor').touched}"
+                formControlName="valor" placeholder="R$ 0,00">
               <div *ngIf="registerForm.get('valor').hasError('required') && registerForm.get('valor').touched" class="invalid-feedback">
                 Valor é obrigatório.
               </div>
@@ -32,12 +35,12 @@
                 Valor deve ser no mínimo 0.01.
               </div>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-5">
               <label>Data Criação</label>
-              <input type="text" class="form-control" [(ngModel)]="produto.dataCriacao" bsDatepicker
-                value="{{produto.dataCriacao | DateTimeFormatPipe}}" [(ngModel)]="dataProduto"
-                [bsConfig]="{ dateInputFormat : 'DD/MM/YYYY hh:mm' }" [ngClass]="{'is-invalid': registerForm.get('dataProduto').errors 
-                && registerForm.get('dataProduto').touched}" formControlName="dataProduto" placeholder="">
+              <input type="text" class="form-control" bsDatepicker
+                value="{{produto.dataCriacao | DateTimeFormatPipe}}"
+                [bsConfig]="{ dateInputFormat : 'DD/MM/YYYY hh:mm' }" [ngClass]="{'is-invalid': registerForm.get('dataCriacao').errors 
+                && registerForm.get('dataCriacao').touched}" formControlName="dataCriacao" placeholder="">
             </div>
           </div>
         </tab>
@@ -65,7 +68,9 @@
           <hr>
           <p class="card-text">
             <b>Valor</b><br>
-            <small class="text-muted">R$ {{produto.valor}}</small>
+            <small class="text-muted" currencyMask [options]='{ prefix: "R$ ", thousands: ".", decimal: "," }'>
+              R$ {{produto.valor}}
+            </small>
           </p>
         </div>
       </div>

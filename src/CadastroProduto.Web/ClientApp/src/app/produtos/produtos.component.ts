@@ -14,6 +14,7 @@ export class ProdutosComponent implements OnInit {
 
   titulo = 'Produtos';
   dataCriacao: string;
+  nomeTemplate: string;
   produtosFiltrados: Produto[];
   produtos: Produto[];
   produto: Produto;
@@ -48,6 +49,7 @@ export class ProdutosComponent implements OnInit {
   }
 
   editarProduto(produto: Produto, template: any) {
+    this.nomeTemplate = 'Editar Produto';
     this.modoSalvar = 'put';
     this.openModal(template);
     this.produto = Object.assign({}, produto);
@@ -57,11 +59,13 @@ export class ProdutosComponent implements OnInit {
   }
 
   novoProduto(template: any) {
+    this.nomeTemplate = 'Novo Produto';
     this.modoSalvar = 'post';
     this.openModal(template);
   }
 
   excluirProduto(produto: Produto, template: any) {
+    this.nomeTemplate = 'Excluir Produto';
     this.openModal(template);
     this.produto = produto;
     this.bodyDeletarProduto = `Tem certeza que deseja excluir o Produto: ${produto.nome}, Código: ${produto.id}`;
@@ -125,13 +129,11 @@ export class ProdutosComponent implements OnInit {
       nome: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       valor: ['', Validators.required, Validators.min(0.01)],
       imagemURL: ['', Validators.required],
-      dataCriacao: [],
+      dataCriacao: [this.dataCriacao],
     });
   }
 
   onFileChange(event) {
-    const reader = new FileReader();
-
     if (event.target.files && event.target.files.length) {
       this.file = event.target.files;
       console.log(this.file);

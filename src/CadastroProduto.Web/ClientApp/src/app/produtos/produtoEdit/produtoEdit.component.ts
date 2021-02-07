@@ -14,7 +14,7 @@ import { ApiResponse } from 'src/app/_models/ApiResponse';
 export class ProdutoEditComponent implements OnInit {
 
   titulo = 'Editar Produto';
-  produto: Produto = new Produto();
+  produto: Produto;
   imagemURL = 'assets/img/upload.png';
   registerForm: FormGroup;
   file: File;
@@ -31,6 +31,7 @@ export class ProdutoEditComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.produto = new Produto();
     this.validation();
     this.carregarProduto();
   }
@@ -55,11 +56,11 @@ export class ProdutoEditComponent implements OnInit {
 
   validation() {
     this.registerForm = this.fb.group({
-      id: [],
-      nome: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      valor: ['', Validators.required],
-      imagemURL: [],
-      dataCriacao: [],
+      id: [this.produto.id],
+      nome: [this.produto.nome , [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
+      valor: [this.produto.valor, [Validators.required, Validators.min(0.01)]],
+      imagemURL: [this.produto.imagemURL],
+      dataCriacao: [this.produto.dataCriacao],
     });
   }
 

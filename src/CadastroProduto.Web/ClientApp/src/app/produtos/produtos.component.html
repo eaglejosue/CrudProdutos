@@ -1,12 +1,12 @@
 <app-titulo [titulo]="titulo"></app-titulo>
 
 <div class="row">
-  <div class="form-inline col-sm-8 mr-auto">
+  <div class="input-group form-inline col-sm-7 mr-auto">
     <label class="mr-2">Filtro:</label>
-    <input type="text" class="form-control mr-2" placeholder="buscar" [(ngModel)]="filtroLista">
+    <input type="text" class="form-control mr-2" placeholder="buscar" aria-label="buscar" [(ngModel)]="filtroLista">
   </div>
   <div class="col-sm-2">
-    <button class="btn btn-outline-primary" (click)="novoProduto(template)">
+    <button class="btn btn-outline-primary float-right" (click)="novoProduto(template)">
       <i class="fa fa-plus-circle"></i>&nbsp;
       Novo Produto
     </button>
@@ -25,6 +25,7 @@
       <th>Nome</th>
       <th>Valor</th>
       <th>Data Criação</th>
+      <th></th>
     </tr>
   </thead>
   <tbody *ngIf="produtos && produtos.length">
@@ -37,7 +38,7 @@
       <td>{{produto.nome}}</td>
       <td>{{produto.valor}}</td>
       <td>{{produto.dataCriacao | DateTimeFormatPipe}}</td>
-      <td>
+      <td class="fit-grid-column">
         <div class="btn-group">
           <button class="btn btn-sm btn-success" tooltip="Editar" (click)="editarProduto(produto, template)">
             <i class="fa fa-edit"></i>
@@ -45,12 +46,10 @@
           <button class="btn btn-sm btn-danger" tooltip="Excluir" (click)="excluirProduto(produto, confirm)">
             <i class="fa fa-eraser"></i>
           </button>
+          <a [routerLink]="['/produto', produto.id, 'edit']" tooltip="Edição Detalhada" class="btn btn-sm btn-warning">
+            <i class="fa fa-edit"></i>
+          </a>
         </div>
-      </td>
-      <td>
-        <a [routerLink]="['/produto', produto.id, 'edit']" tooltip="Edição Detalhada" class="btn btn-sm btn-warning">
-          <i class="fa fa-edit"></i>
-        </a>
       </td>
     </tr>
   </tbody>
@@ -69,7 +68,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 id="dialog-sizes-name1" class="modal-title pull-left">Large modal</h4>
+        <h4 id="dialog-sizes-name1" class="modal-title pull-left">{{nomeTemplate}}</h4>
         <button type="button" class="close pull-right" (click)="template.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -94,21 +93,23 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-8">
+            <div class="form-group col-md-7">
               <label>Valor</label>
               <input type="text" currencyMask class="form-control"
-                [ngClass]="{'is-invalid': registerForm.get('valor').errors && registerForm.get('valor').touched}" formControlName="valor" placeholder="R$ 0,00">
+                [options]='{ prefix: "R$ ", thousands: ".", decimal: "," }'
+                [ngClass]="{'is-invalid': registerForm.get('valor').errors && registerForm.get('valor').touched}"
+                formControlName="valor" placeholder="R$ 0,00">
               <div *ngIf="registerForm.get('valor').hasError('required') && registerForm.get('valor').touched" class="invalid-feedback">
                 Valor é obrigatório.
               </div>
               <div *ngIf="registerForm.get('valor').hasError('min') && registerForm.get('valor').touched" class="invalid-feedback">
-                Valor deve ser no mínimo 0.01.
+                Valor deve ser no mínimo 0,01.
               </div>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-5">
               <label>Data Criação</label>
               <input type="text" class="form-control" bsDatepicker value="{{dataCriacao | DateTimeFormatPipe}}"
-                [bsConfig]="{ dateInputFormat : 'DD/MM/YYYY hh:mm' }">
+                [bsConfig]="{ dateInputFormat : 'DD/MM/YYYY hh:mm' }" formControlName="dataCriacao">
             </div>
           </div>
           <div class="form-row">
@@ -162,10 +163,10 @@
       </div>
       <div class="modal-footer btn-group d-flex">
         <button type="button" class="btn btn-outline-primary" (click)="confirm.hide()">
-          CENCELAR
+          Cancelar
         </button>
         <button type="button" class="btn btn-outline-danger" (click)="confirmeDelete(confirm)">
-          DELETAR
+          Deletar
         </button>
       </div>
     </div>

@@ -68,10 +68,10 @@ namespace CadastroProduto.Web.Controllers
         {
             try
             {
-                if (id == 0) return NotFound();
+                if (id == 0) Result(new Result("Id do Produto não informado."));
 
                 var produto = await _produtoRepository.GetById(id);
-                if (produto == null) return NotFound();
+                if (produto == null) Result(new Result("Produto não encontrado."));
 
                 return Result(new Result(produto));
             }
@@ -138,10 +138,10 @@ namespace CadastroProduto.Web.Controllers
                     return Result(result);
                 }
 
-                if (produto == null) return NotFound();
+                if (produto == null) Result(new Result("Produto não definido."));
 
                 var produtoBd = await _produtoRepository.GetById(produto.Id);
-                if (produtoBd == null) return NotFound();
+                if (produtoBd == null) Result(new Result("Produto não encontrado."));
 
                 var command = _mapper.Map<UpdateProdutoCommand>(produto);
                 result = await _mediator.Send(command);
@@ -169,6 +169,8 @@ namespace CadastroProduto.Web.Controllers
         {
             try
             {
+                if (id == 0) Result(new Result("Id do Produto não informado."));
+
                 var request = new DeleteProdutoCommand(id);
                 var result = await _mediator.Send(request);
                 return Result(result);
