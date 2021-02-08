@@ -145,23 +145,17 @@ export class ProdutosComponent implements OnInit {
     if (this.modoSalvar === 'post') {
       const nomeArquivo = this.produto.imagemURL.split('\\', 3);
       this.produto.imagemURL = nomeArquivo[2];
-      this.produtoService.postUpload(this.file, nomeArquivo[2])
-        .subscribe(
-          () => {
-            this.dataAtual = new Date().getMilliseconds().toString();
-            this.getProdutos();
-          }
-        );
     } else {
       this.produto.imagemURL = this.fileNameToUpdate;
-      this.produtoService.postUpload(this.file, this.fileNameToUpdate)
-        .subscribe(
-          () => {
-            this.dataAtual = new Date().getMilliseconds().toString();
-            this.getProdutos();
-          }
-        );
     }
+    
+    this.produtoService.postUpload(this.file, this.fileNameToUpdate)
+      .subscribe(
+        () => {
+          this.dataAtual = new Date().getMilliseconds().toString();
+          this.getProdutos();
+        }
+      );
   }
 
   salvarAlteracao(template: any) {
