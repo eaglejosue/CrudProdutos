@@ -26,8 +26,8 @@ export class ProdutosComponent implements OnInit {
   registerForm: FormGroup;
   bodyDeletarProduto = '';
 
-  fileNameToUpdate: string;
   file: File;
+  fileNameToUpdate: string;
 
   dataAtual: string;
 
@@ -167,17 +167,16 @@ export class ProdutosComponent implements OnInit {
   salvarAlteracao(template: any) {
     if (this.registerForm.valid) {
       if (this.modoSalvar === 'post') {
-
         this.produto = Object.assign({}, this.registerForm.value);
-        const nomeArquivo = this.produto.imagemURL.split('\\', 3);
-        this.produto.imagemURL = nomeArquivo[2];
+
+        this.uploadImagem();
         
         this.produtoService.postProduto(this.produto).subscribe(
           (apiResponse: ApiResponse<Produto>) => {
             if (apiResponse && apiResponse.success){ 
               template.hide();
+              this.getProdutos();
               this.toastrService.success('Inserido com Sucesso!');
-              this.uploadImagem();
             }
             else this.toastrService.error(`Erro ao Inserir: ${apiResponse.errors[0]}`);
           }, error => {
@@ -187,14 +186,15 @@ export class ProdutosComponent implements OnInit {
       } else {
 
         this.produto = Object.assign({ id: this.produto.id }, this.registerForm.value);
-        this.produto.imagemURL = this.fileNameToUpdate;
+        
+        this.uploadImagem();
 
         this.produtoService.putProduto(this.produto).subscribe(
           (apiResponse: ApiResponse<Produto>) => {
             if (apiResponse && apiResponse.success) {
               template.hide();
+              this.getProdutos();
               this.toastrService.success('Editado com Sucesso!');
-              this.uploadImagem();
             }
             else this.toastrService.error(`Erro ao Editar: ${apiResponse.errors[0]}`);
           }, error => {

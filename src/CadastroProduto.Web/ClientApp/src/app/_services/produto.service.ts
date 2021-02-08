@@ -8,7 +8,7 @@ import { ApiResponse } from '../_models/ApiResponse';
   providedIn: 'root'
 })
 export class ProdutoService {
-  baseURL = 'http://localhost:5000/api/produto';
+  baseURL = 'https://localhost:5001/api/produto';
 
   constructor(private http: HttpClient) { }
 
@@ -21,16 +21,11 @@ export class ProdutoService {
   }
 
   postUpload(file: File, name: string) {
-    const fileToUpload = <File>file[0];
+    let fileToUpload = <File>file[0];
     const formData = new FormData();
     formData.append('file', fileToUpload, name);
 
-    const req = new HttpRequest('POST', `${this.baseURL}/upload`, formData, {
-      reportProgress: true,
-      responseType: 'json'
-    });
-
-    return this.http.request(req);
+    return this.http.post(`${this.baseURL}/upload`, formData);
   }
 
   postProduto(produto: Produto) {

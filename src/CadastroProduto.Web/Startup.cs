@@ -4,13 +4,16 @@ using CadastroProduto.Web.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.IO;
 
 namespace CadastroProduto.Web
 {
@@ -48,6 +51,12 @@ namespace CadastroProduto.Web
             services.AddAutoMapperSetup();
             services.AddMediatRSetup();
 
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
+
             NativeInjectorConfig.RegisterServices(services);
 
             services.AddControllersWithViews();
@@ -76,10 +85,17 @@ namespace CadastroProduto.Web
             app.UseCors(c => c.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            if (!env.IsDevelopment())
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), @"Resources");
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+            
+            app.UseStaticFiles(new StaticFileOptions()
             {
-                app.UseSpaStaticFiles();
-            }
+                FileProvider = new PhysicalFileProvider(path),
+                RequestPath = new PathString("/Resources")
+            });
+
+            if (!env.IsDevelopment()) app.UseSpaStaticFiles();
 
             app.UseRouting();
 

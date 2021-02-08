@@ -5,6 +5,7 @@ using CadastroProduto.Domain.Entities;
 using CadastroProduto.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -191,19 +192,19 @@ namespace CadastroProduto.Web.Controllers
         /// <returns>IActionResult</returns>
         /// <example>POST: api/Produto/upload</example>
         [HttpPost("upload")]
-        public IActionResult Upload()
+        public IActionResult Upload([FromForm] List<IFormFile> files)
         {
             try
             {
-                //Alterar para salvar imagens em storage, s3 ou outro recurso
-                if (Request.Form.Files.Count == 0) return Result(new Result("Arquivo não selecionado."));
+                if (files == null || files.Count == 0) return Result(new Result("Arquivo não selecionado."));
 
-                var file = Request.Form.Files[0];
+                var file = files.FirstOrDefault();
                 var folderName = Path.Combine("Resources", "Images");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
                 if (!Directory.Exists(pathToSave)) Directory.CreateDirectory(pathToSave);
 
+                //Alterar para salvar imagens em storage, s3 ou outro recurso
                 if (file.Length > 0)
                 {
                     var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
