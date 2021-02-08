@@ -137,7 +137,6 @@ export class ProdutosComponent implements OnInit {
   onFileChange(event) {
     if (event.target.files && event.target.files.length) {
       this.file = event.target.files;
-      console.log(this.file);
     }
   }
 
@@ -162,6 +161,7 @@ export class ProdutosComponent implements OnInit {
     if (this.registerForm.valid) {
       if (this.modoSalvar === 'post') {
         this.produto = Object.assign({}, this.registerForm.value);
+        if (this.produto.dataCriacao == null) this.produto.dataCriacao = new Date();
 
         this.uploadImagem();
         
@@ -178,9 +178,9 @@ export class ProdutosComponent implements OnInit {
           }
         );
       } else {
-
         this.produto = Object.assign({ id: this.produto.id }, this.registerForm.value);
-        
+        if (this.produto.dataCriacao == null) this.produto.dataCriacao = new Date();
+
         this.uploadImagem();
 
         this.produtoService.putProduto(this.produto).subscribe(

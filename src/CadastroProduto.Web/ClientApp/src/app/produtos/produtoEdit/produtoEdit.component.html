@@ -47,7 +47,8 @@
       </tabset>
       <div class="row">
         <div class="col-md-12 d-flex justify-content-end">
-          <button [disabled]="!registerForm.valid" class="btn btn-success my-2" (click)="salvarProduto()">Salvar Alterações</button>
+          <button [disabled]="!registerForm.valid" class="btn btn-success my-2 mr-2" (click)="salvarProduto()">Salvar Alterações</button>
+          <button class="btn btn-warning my-2" (click)="voltar()">Voltar</button>
         </div>
       </div>
     </div>

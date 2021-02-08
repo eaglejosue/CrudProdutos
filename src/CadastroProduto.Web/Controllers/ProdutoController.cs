@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -44,8 +43,6 @@ namespace CadastroProduto.Web.Controllers
             try
             {
                 var produtos = await _produtoRepository.GetAll();
-                if (produtos.Count() == 0) return NotFound();
-
                 return Result(new Result(produtos));
             }
             catch (Exception ex)
@@ -192,13 +189,13 @@ namespace CadastroProduto.Web.Controllers
         /// <returns>IActionResult</returns>
         /// <example>POST: api/Produto/upload</example>
         [HttpPost("upload")]
-        public IActionResult Upload([FromForm] List<IFormFile> files)
+        public IActionResult Upload([FromForm] IFormCollection files)
         {
             try
             {
-                if (files == null || files.Count == 0) return Result(new Result("Arquivo não selecionado."));
+                if (files == null || files.Files.Count == 0) return Result(new Result("Arquivo não selecionado."));
 
-                var file = files.FirstOrDefault();
+                var file = files.Files.FirstOrDefault();
                 var folderName = Path.Combine("Resources", "Images");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
@@ -209,6 +206,8 @@ namespace CadastroProduto.Web.Controllers
                 {
                     var filename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
                     var fullPath = Path.Combine(pathToSave, filename.Replace("\"", " ").Trim());
+
+                    if (System.IO.File.Exists(fullPath)) return Result(new Result(true));
 
                     using var stream = new FileStream(fullPath, FileMode.Create);
                     file.CopyTo(stream);

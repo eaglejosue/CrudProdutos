@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProdutoService } from 'src/app/_services/produto.service';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Produto } from 'src/app/_models/Produto';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ApiResponse } from 'src/app/_models/ApiResponse';
 
@@ -25,7 +25,8 @@ export class ProdutoEditComponent implements OnInit {
   constructor(
     private produtoService: ProdutoService
     , private fb: FormBuilder
-    , private router: ActivatedRoute
+    , private router: Router
+    , private routeAr: ActivatedRoute
     , private toastrService: ToastrService
   ) {
   }
@@ -37,12 +38,12 @@ export class ProdutoEditComponent implements OnInit {
   }
 
   carregarProduto() {
-    const idProduto = +this.router.snapshot.paramMap.get('id');
+    const idProduto = +this.routeAr.snapshot.paramMap.get('id');
     this.produtoService.getProdutoById(idProduto).subscribe(
       (apiResponse: ApiResponse<Produto>) => {
         if (apiResponse && apiResponse.success){
           this.produto = apiResponse.data;
-          this.fileNameToUpdate = apiResponse.data.imagemURL.toString();
+          this.fileNameToUpdate = apiResponse.data.imagemURL;
           
           this.imagemURL = `http://localhost:5000/resources/images/${this.produto.imagemURL}?_ts=${this.dataAtual}`;
           
@@ -66,16 +67,24 @@ export class ProdutoEditComponent implements OnInit {
 
   onFileChange(produto: any, file: FileList) {
     const reader = new FileReader();
-
     reader.onload = (event: any) => this.imagemURL = event.target.result;
 
     this.file = produto.target.files;
     reader.readAsDataURL(file[0]);
   }
 
+  voltar() {
+    this.router.navigate(['/produtos']);
+  }
+
   salvarProduto() {
     this.produto = Object.assign({ id: this.produto.id }, this.registerForm.value);
-    this.produto.imagemURL = this.fileNameToUpdate;
+
+    const nomeArquivo = this.produto.imagemURL.split('\\', 3);
+    this.produto.imagemURL = nomeArquivo[2];
+    this.fileNameToUpdate = nomeArquivo[2];
+
+    if (this.produto.dataCriacao == null) this.produto.dataCriacao = new Date();
 
     this.produtoService.putProduto(this.produto).subscribe(
       (apiResponse: ApiResponse<Produto>) => {
@@ -83,7 +92,9 @@ export class ProdutoEditComponent implements OnInit {
           this.toastrService.success("Editado com Sucesso!");
           this.uploadImagem();
         }
-        else this.toastrService.error(`Erro ao Editar: ${apiResponse.errors[0]}`);
+        else {
+          this.toastrService.error(`Erro ao Editar: ${apiResponse.errors[0]}`);
+        }
       }, error => {
         this.toastrService.error(`Erro ao Editar: ${error}`);
       }
@@ -96,7 +107,8 @@ export class ProdutoEditComponent implements OnInit {
         .subscribe(
           () => {
             this.dataAtual = new Date().getMilliseconds().toString();
-            this.imagemURL = `http://localhost:5000/resources/images/${this.produto.imagemURL}?_ts=${this.dataAtual}`;
+            this.imagemURL = `https://localhost:5001/Resources/Images/${this.produto.imagemURL}?_ts=${this.dataAtual}`;
+            this.router.navigate(['/produtos']);
           }
         );
     }

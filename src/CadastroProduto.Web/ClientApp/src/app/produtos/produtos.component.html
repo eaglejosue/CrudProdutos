@@ -31,7 +31,7 @@
   <tbody *ngIf="produtos && produtos.length">
     <tr *ngFor="let produto of produtosFiltrados">
       <td>
-        <img *ngIf="mostrarImagem" src="http://localhost:5000/resources/images/{{produto.imagemURL}}?_ts={{dataAtual}}"
+        <img *ngIf="mostrarImagem" src="https://localhost:5001/Resources/Images/{{produto.imagemURL}}?_ts={{dataAtual}}"
           [style.width.px]="imagemLargura" [style.margin.px]="imagemMargem">
       </td>
       <td>{{produto.id}}</td>
@@ -53,7 +53,7 @@
       </td>
     </tr>
   </tbody>
-  <tfoot *ngIf="!produtos">
+  <tfoot *ngIf="!produtos || produtos.length == 0">
     <tr>
       <td colspan="7" class="text-center">
         <h4>
